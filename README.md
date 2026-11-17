@@ -29,24 +29,28 @@ Despite the abundance of free learning resources (documentation, video courses, 
 ## 🏗️ System Architecture
 
 FitCheck operates as a decoupled, polyglot microservice network containerized using Docker:
+
+```text
 ┌────────────────────────────────────────────────────────┐
-│ CLIENT (React.js) │
-│ Tailwind CSS | React Flow (@xyflow) | Firebase Auth │
+│                   CLIENT (React.js)                    │
+│   Tailwind CSS | React Flow (@xyflow) | Firebase Auth  │
 └──────────────────────────┬─────────────────────────────┘
-│ HTTPS / REST (JWT Bearer Token)
-▼
+                           │ HTTPS / REST (JWT Bearer Token)
+                           ▼
 ┌────────────────────────────────────────────────────────┐
-│ API GATEWAY (Node.js + Express) │
-│ Auth Validation | State Orchestrator | Piston Client │
+│             API GATEWAY (Node.js + Express)            │
+│   Auth Validation | State Orchestrator | Piston Client │
 └─────────────┬────────────────────────────┬─────────────┘
-│ SQL / pgvector │ HTTP (JSON / Pydantic)
-▼ ▼
-┌──────────────────────────┐ ┌──────────────────────────┐
-│ DATABASE (Postgres) │ │ AI SERVICE (FastAPI) │
-│ pgvector | DNA Event Log │ │ MAS: ADE, CIE, MIE, EIE │
-│ Materialized State Snap │ │ AST Engine | Groq/Gemini │
-└──────────────────────────┘ └──────────────────────────┘
-Code
+              │ SQL / pgvector             │ HTTP (JSON / Pydantic)
+              ▼                            ▼
+┌──────────────────────────┐  ┌──────────────────────────┐
+│   DATABASE (Postgres)    │  │   AI SERVICE (FastAPI)   │
+│ pgvector | DNA Event Log │  │ MAS: ADE, CIE, MIE, EIE  │
+│ Materialized State Snap  │  │ Flow Engine | Groq/Gemini│
+└──────────────────────────┘  └──────────────────────────┘
+
+```
+
 ---
 
 ## 🤖 The 6-Agent Multi-Agent System (MAS)
@@ -89,53 +93,65 @@ FitCheck coordinates six specialized engines to automate learning and verificati
 
 ## 🚀 Quickstart & Local Setup
 
-### Prerequisites
-* [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
-* [Node.js](https://nodejs.org/) v20+ and [Python](https://www.python.org/) 3.11+.
-* API keys for **Groq Cloud** and **Google AI Studio (Gemini)**.
-
-### 1. Clone the Repository
+# Clone the Repository
 ```bash
-git clone https://github.com/YOUR_ORGANIZATION/FitCheck.git
+git clone https://github.com/ashree937-ux/FitCheck.git
 cd FitCheck
-2. Configure Environment Variables
-Copy .env.example to .env:
-Bash
+```
+
+# Configure Environment Variables
+Copy the template environment file:
+```bash
 cp .env.example .env
-Fill in your configuration:
+Populate .env with your credentials:
 Env
+```
+
 # Database Configuration
+```bash 
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=fitcheck_db
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/fitcheck_db
+```
 
 # AI Microservice Keys
+```bash 
 GROQ_API_KEY=your_groq_api_key_here
 GEMINI_API_KEY=your_gemini_api_key_here
+```
 
 # Services & Authentication
+```bash
 JWT_SECRET=your_jwt_signing_secret_here
 RESEND_API_KEY=your_resend_api_key_here
-3. Start Local Infrastructure via Docker
-Bash
+```
+Start Local Infrastructure via Docker
+Run the local multi-container network with one command:
+```bash
 docker compose up --build
-Access local service instances:
-Client Application: http://localhost:3000
-Node.js API Gateway: http://localhost:5000
-FastAPI AI Docs (Swagger): http://localhost:8000/docs
-PostgreSQL (pgvector): localhost:5432
-📁 Repository Structure
-Text
+```
+
+# 🌐 Service Endpoints
+Once the containers are running, access the local services:
+| Service | Local Address | Description |
+| :--- | :--- | :--- |
+| **Client Application (Vite)** | `http://localhost:5173` | Interactive Frontend & Learning Canvas |
+| **Node.js API Gateway** | `http://localhost:5000` | REST Endpoints & Authentication Gateway |
+| **FastAPI Microservice** | `http://localhost:8000/docs` | Interactive Swagger API Documentation |
+| **PostgreSQL (pgvector)** | `localhost:5432` | Relational & Vector Competency Database |
+
+# 📁 Repository Structure
+
+```text 
+
 FitCheck/
 ├── .github/workflows/ci-cd.yml      # Automated linting & build verification
 ├── docker-compose.yml               # Local multi-service cluster
-├── docs/
-│   └── SRS.md                       # Complete Software Requirements Specification
-├── client/                          # React.js + Tailwind CSS Client
-│   ├── src/components/roadmap/      # @xyflow/react Roadmap Canvas
-│   ├── src/components/gym/          # Technical Gym & Code Flow Defense
-│   └── src/pages/                   # Landing, Onboarding, Forecast, Dashboard
+├── client/                          # React.js + Tailwind CSS Client (Vite)
+│   ├── src/components/              # Common, Roadmap, Gym, Dashboard
+│   ├── src/pages/                   # Application views
+│   └── src/services/                # API client adapters
 ├── server/                          # Node.js + Express API Gateway
 │   ├── src/controllers/             # Auth, Roadmap, Gym, Track controllers
 │   ├── src/models/                  # PostgreSQL queries & migrations
@@ -144,10 +160,17 @@ FitCheck/
     ├── app/agents/                  # ADE, CIE, MIE, EIE, RIE, UPE
     ├── app/core/llm_router.py       # Frugal Groq <-> Gemini failover router
     └── app/schemas/                 # Pydantic validation models
-👥 Engineering Team & Ownership
+
+```
+
+## 👥 Engineering Team & Ownership
 FitCheck is developed and maintained by a 3-engineer peer team:
-Backend & System Architecture: Node.js Express Gateway, PostgreSQL + pgvector design, DNA Event Sourcing engine, Piston Sandbox integration.
-Frontend Engineering: React.js, Tailwind CSS, AdaptUI implementations, @xyflow/react Roadmap Canvas, interactive telemetry.
-AI & Agent Systems: Python FastAPI Microservice, 6-Agent MAS Network (ADE, CIE, MIE, EIE, RIE, UPE), Code Flow Defense, LLM Failover Router.
-📄 License
+
+* **Backend & System Architecture:** Node.js Express Gateway, PostgreSQL + pgvector design, DNA Event Sourcing engine, Piston Sandbox integration.
+* **Frontend Engineering:** React.js, Tailwind CSS, AdaptUI implementations, `@xyflow/react` Roadmap Canvas, interactive telemetry.
+* **AI & Agent Systems:** Python FastAPI Microservice, 6-Agent MAS Network (ADE, CIE, MIE, EIE, RIE, UPE), Code Flow Defense, LLM Failover Router.
+
+## 📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
+Code
+---
